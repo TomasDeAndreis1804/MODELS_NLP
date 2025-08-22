@@ -1,8 +1,11 @@
 from typing import Union
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 import pandas as pd
+
+
 
 # ==============================
 # 1. Esquemas de entrada
@@ -51,11 +54,21 @@ app = FastAPI(
     version="2.0.0"
 )
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # o ["http://localhost:3000"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 # ==============================
 # 3. Cargar modelos
 # ==============================
 iris_model = joblib.load("Models/iris_best_model.pkl")
-penguins_model = joblib.load("Models/penguins_rf_model.pkl")
+penguins_model = joblib.load("Models/Penguins.pkl")
 titanic_model = joblib.load("Models/titanic_rf_model.pkl")
 german_model = joblib.load("Models/german_credit.pkl") 
 
